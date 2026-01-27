@@ -16,7 +16,7 @@ variable "memory" {
 
 variable "disk_size" {
   type    = number
-  default = 40000
+  default = 20000
 }
 
 variable "port_forwards" {
@@ -26,6 +26,8 @@ variable "port_forwards" {
     "HTTPS,tcp,,443,,443",
     "SSH,tcp,,2222,,22",
     "Web 3000,tcp,,3000,,3000",
+    "Web 4000,tcp,,4000,,4000",
+    "Web 5000,tcp,,5000,,5000",
     "Web 8080,tcp,,8080,,8080"
   ]
 }

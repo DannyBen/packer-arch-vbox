@@ -14,7 +14,7 @@ source "virtualbox-iso" "arch" {
   # --- Connectivity ---
   ssh_username     = "root"
   ssh_password     = "packer"
-  ssh_timeout      = "30m"
+  ssh_timeout      = "10m"
   shutdown_command = "systemctl poweroff"
   ssh_host_port_min = 2222
   ssh_host_port_max = 2222
@@ -25,7 +25,10 @@ source "virtualbox-iso" "arch" {
     [for pf in var.port_forwards : ["modifyvm", "{{.Name}}", "--natpf1", pf]]
   )
 
-  # --- Boot Command ---
+  # --- Boot Sequencing ---
+  boot_wait = "20s"
+  boot_keygroup_interval = "300ms"
+  pause_before_connecting = "1s"
   boot_command = [
     "<enter><wait20>",
     "echo 'root:packer' | chpasswd<enter>",

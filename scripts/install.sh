@@ -15,7 +15,7 @@ mount /dev/sda1 /mnt
 
 # --- 2. Base Installation ---
 echo "==> Installing base system and essential packages..."
-pacstrap /mnt base linux linux-firmware base-devel grub networkmanager openssh virtualbox-guest-utils
+pacstrap /mnt base linux linux-firmware grub networkmanager openssh virtualbox-guest-utils
 
 echo "==> Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
