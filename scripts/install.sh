@@ -32,6 +32,9 @@ arch-chroot /mnt bash -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/gr
 arch-chroot /mnt bash -c "grub-install --target=i386-pc /dev/sda"
 arch-chroot /mnt bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 
+echo "==> Ensuring VirtualBox shared folder modules load at boot..."
+arch-chroot /mnt bash -c "echo 'vboxsf' > /etc/modules-load.d/vboxsf.conf"
+
 echo "==> Enabling system services..."
 arch-chroot /mnt systemctl enable NetworkManager sshd vboxservice
 
