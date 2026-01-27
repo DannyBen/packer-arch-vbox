@@ -8,7 +8,7 @@ source "virtualbox-iso" "arch" {
   guest_os_type = "ArchLinux_64"
   iso_url       = "https://mirrors.kernel.org/archlinux/iso/latest/archlinux-x86_64.iso"
   iso_checksum  = "file:https://mirrors.kernel.org/archlinux/iso/latest/sha256sums.txt"
-  headless      = false
+  headless      = true
   format        = "ova"
   
   # --- Connectivity ---

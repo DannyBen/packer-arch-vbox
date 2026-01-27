@@ -1,3 +1,4 @@
 /output-arch
-/packer_cache
 /packer-manifest.json*
+/packer.log
+/packer_cache
