@@ -15,7 +15,9 @@ mount /dev/sda1 /mnt
 
 # --- 2. Base Installation ---
 echo "==> Installing base system and essential packages..."
-pacstrap /mnt base linux linux-firmware grub networkmanager openssh virtualbox-guest-utils
+mkdir -p /mnt/etc
+echo "KEYMAP=us" > /mnt/etc/vconsole.conf
+pacstrap /mnt base linux linux-firmware grub networkmanager openssh virtualbox-guest-utils sudo
 
 echo "==> Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -24,7 +26,6 @@ echo "vagrant /vagrant vboxsf defaults,uid=1000,gid=1000,dmode=775,fmode=775,nof
 
 # --- 3. System Configuration ---
 echo "==> Configuring system settings and bootloader..."
-arch-chroot /mnt bash -c "echo 'KEYMAP=us' > /etc/vconsole.conf"
 arch-chroot /mnt bash -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
 
 arch-chroot /mnt bash -c "grub-install --target=i386-pc /dev/sda"
