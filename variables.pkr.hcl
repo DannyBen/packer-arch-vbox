@@ -1,19 +1,23 @@
 variable "cpus" {
+  description = "Number of virtual CPUs allocated to the guest."
   type    = number
   default = 4
 }
 
 variable "memory" {
+  description = "Memory in MB allocated to the guest."
   type    = number
   default = 8192
 }
 
 variable "disk_size" {
+  description = "Disk size in MB for the virtual disk."
   type    = number
-  default = 20000
+  default = 40000
 }
 
 variable "port_forwards" {
+  description = "VirtualBox NAT port forward rules."
   type = list(string)
   default = [
     "HTTP,tcp,,80,,80",
@@ -26,8 +30,8 @@ variable "port_forwards" {
   ]
 }
 
-# Store generic hardware tweaks
 variable "vbox_tweaks" {
+  description = "Extra VirtualBox VM settings applied via vboxmanage."
   type = list(list(string))
   default = [
     # Performance & System Architecture

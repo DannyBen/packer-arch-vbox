@@ -2,6 +2,7 @@
 set -e
 
 # --- 1. Disk Preparation ---
+# NOTE: This wipes /dev/sda completely. Intended for a fresh VM only.
 echo "==> Preparing disk /dev/sda..."
 wipefs -a /dev/sda
 parted -s /dev/sda mklabel msdos
