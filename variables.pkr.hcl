@@ -1,9 +1,3 @@
-variable "compress" {
-  type    = string
-  default = env("COMPRESS") != "" ? env("COMPRESS") : "false"
-  description = "Set to 'true' via env var to enable disk zeroing for smaller OVA size."
-}
-
 variable "cpus" {
   type    = number
   default = 4

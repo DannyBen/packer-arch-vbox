@@ -26,11 +26,12 @@ source "virtualbox-iso" "arch" {
   )
 
   # --- Boot Sequencing ---
-  boot_wait = "20s"
+  # Note that these values can be smaller for a headful run
+  boot_wait = "30s"
   boot_keygroup_interval = "300ms"
   pause_before_connecting = "1s"
   boot_command = [
-    "<enter><wait20>",
+    "<enter><wait30>",
     "echo 'root:packer' | chpasswd<enter>",
     "systemctl start sshd<enter>"
   ]
@@ -40,9 +41,6 @@ build {
   sources = ["source.virtualbox-iso.arch"]
 
   provisioner "shell" {
-    environment_vars = [
-      "COMPRESS=${var.compress}"
-    ]
     script = "scripts/install.sh"
   }
 

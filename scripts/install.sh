@@ -17,7 +17,7 @@ mount /dev/sda1 /mnt
 echo "==> Installing base system and essential packages..."
 mkdir -p /mnt/etc
 echo "KEYMAP=us" > /mnt/etc/vconsole.conf
-pacstrap /mnt base linux linux-firmware grub networkmanager openssh virtualbox-guest-utils sudo
+pacstrap /mnt base linux grub networkmanager openssh virtualbox-guest-utils sudo
 
 echo "==> Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -50,15 +50,8 @@ arch-chroot /mnt chown vagrant:vagrant /vagrant
 
 # --- 5. Cleanup & Optimization ---
 echo "==> Purging pacman cache..."
-arch-chroot /mnt pacman -Scc --noconfirm
+arch-chroot /mnt bash -c "yes | pacman -Scc"
 
-# Optional: Zero out the drive to optimize final image compression
-# This can be time-consuming; enable only if minimal artifact size is required.
-if [ "$COMPRESS" = "true" ]; then
-  echo "==> Zeroing out the drive for maximum compression..."
-  dd if=/dev/zero of=/mnt/EMPTY bs=1M || true
-  rm /mnt/EMPTY
-fi
 
 echo "==> Unmounting and finalizing..."
 sync
