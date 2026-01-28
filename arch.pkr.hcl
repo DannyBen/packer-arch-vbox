@@ -26,10 +26,10 @@ source "virtualbox-iso" "arch" {
     # Performance & System Architecture
     # ---------------------------------
     # x2apic: Better interrupt handling for multi-core guests
-    # paravirt-provider: "minimal" is often best for Arch on modern VBox
+    # paravirt-provider: "kvm" is often best for Arch on modern VBox
     # rtcuseutc: Ensures guest clock stays in sync with real world
     ["modifyvm", "{{.Name}}", "--x2apic", "on"],
-    ["modifyvm", "{{.Name}}", "--paravirt-provider", "minimal"],
+    ["modifyvm", "{{.Name}}", "--paravirt-provider", "kvm"],
     ["modifyvm", "{{.Name}}", "--rtcuseutc", "on"],
 
     # USB
