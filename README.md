@@ -17,9 +17,12 @@ This image is designed **FOR DEVELOPMENT ONLY**.
 - Forwarded development ports
 - Optimizations for Linux guests on VirtualBox Windows hosts
 
-## Build Requirements
+## How to Use
 
-*You can skip this if you are using the [release OVA][releases]*
+You can either build the box yourself, or use the pre-built OVA from the
+[releases page][releases].
+
+## Build Requirements
 
 - [Packer](https://developer.hashicorp.com/packer/install)
 - [VirtualBox](https://www.virtualbox.org/)
