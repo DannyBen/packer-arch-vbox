@@ -5,6 +5,8 @@ This folder builds a minimal Arch Linux VirtualBox OVA using Packer.
 The build boots the official Arch ISO, installs a base system, and configures a
 virtual machine that aims to provide an experience similar to Vagrant.
 
+This image is designed **FOR DEVELOPMENT ONLY**.
+
 ## What's in the Box
 
 - Arch Linux headless
@@ -15,10 +17,12 @@ virtual machine that aims to provide an experience similar to Vagrant.
 - Forwarded development ports
 - Optimizations for Linux guests on VirtualBox Windows hosts
 
-## Requirements
+## Build Requirements
 
-- [Packer](https://developer.hashicorp.com/packer/install) (HCL2)
-- VirtualBox
+*You can skip this if you are using the [release OVA][releases]*
+
+- [Packer](https://developer.hashicorp.com/packer/install)
+- [VirtualBox](https://www.virtualbox.org/)
 
 ## Building the OVA
 
@@ -74,8 +78,9 @@ packer build -var "cpus=2" -var "memory=4096" .
 ## Releases
 
 Tags use CalVer. Example: `2026.01.28` (or `2026.01.28.1` for multiple releases in a day).
-When a tag is pushed, GitHub Actions builds the OVA and attaches it to the release.
-The workflow expects a self-hosted runner with VirtualBox installed.
+
+You can download the built OVA from the
+[releases page][releases].
 
 ## Files
 
@@ -83,3 +88,6 @@ The workflow expects a self-hosted runner with VirtualBox installed.
 - `variables.pkr.hcl`: Variable defaults and descriptions
 - `scripts/install.sh`: Arch install and configuration
 - `build.cmd`: Windows helper script
+
+
+[releases]: https://github.com/DannyBen/packer-arch-vbox/releases
