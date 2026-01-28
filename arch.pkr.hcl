@@ -92,9 +92,4 @@ build {
   provisioner "shell" {
     script = "scripts/install.sh"
   }
-
-  post-processor "manifest" {
-    output     = "packer-manifest.json"
-    strip_path = true
-  }
 }
