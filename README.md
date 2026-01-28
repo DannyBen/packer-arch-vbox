@@ -80,10 +80,9 @@ packer build -var "cpus=2" -var "memory=4096" .
 
 ## Releases
 
-Tags use CalVer. Example: `2026.01.28` (or `2026.01.28.1` for multiple releases in a day).
+Tags use CalVer. Example: `26.01.28` (or `26.01.28.1` for multiple releases in a day).
 
-You can download the built OVA from the
-[releases page][releases].
+You can download the built OVA from the [releases page][releases].
 
 ## Files
 
