@@ -1,25 +1,47 @@
 # Arch Linux Packer Build (VirtualBox)
 
-This folder builds a minimal Arch Linux VirtualBox OVA using Packer. The build boots the official Arch ISO, installs a base system, and configures a vagrant user plus VirtualBox guest utilities.
+This folder builds a minimal Arch Linux VirtualBox OVA using Packer.
+
+The build boots the official Arch ISO, installs a base system, and configures a
+virtual machine that aims to provide an experience similar to Vagrant.
+
+## What's in the Box
+
+- Arch Linux headless
+- Root user (`root:root`)
+- Vagrant user (`vagrant:vagrant`)
+- VirtualBox Guest Utils
+- Shared folder (guest: /vagrant)
+- Forwarded development ports
+- Optimizations for Linux guests on VirtualBox Windows hosts
 
 ## Requirements
 
-- Packer (HCL2)
+- [Packer](https://developer.hashicorp.com/packer/install) (HCL2)
 - VirtualBox
-- Internet access to download the Arch ISO
 
-## Quick Start
+## Building the OVA
 
 ```bash
+# Download needed plugins
 packer init .
+
+# Build
 packer build -force .
+
+# or, build with logging using the provided build.cmd (assuming packer.exe
+# is in your PATH)
+build
 ```
 
-On Windows you can use:
+## Installing the OVA
 
-```cmd
-build.cmd
-```
+1. Double click the OVA (or select File > Import Appliance from VirtualBox).
+2. Change the machine name.
+3. Change the shared folder host directory (keep the name `vagrant`).
+4. Boot the VM.
+5. Log in with `ssh vagrant@localhost -p 2222` or use the VM console with
+   `root:root` or `vagrant:vagrant`.
 
 ## Outputs
 
@@ -31,11 +53,10 @@ build.cmd
 
 Defaults are in `variables.pkr.hcl`. Override with `-var` or a `.pkrvars.hcl` file.
 
+- `shared_folder_hostpath` (string): host path to share with the VM
 - `cpus` (number): vCPU count
 - `memory` (number): RAM in MB
 - `disk_size` (number): disk size in MB
-- `port_forwards` (list(string)): VirtualBox NAT port forwards
-- `vbox_tweaks` (list(list(string))): extra `vboxmanage` settings
 
 Example:
 
@@ -43,20 +64,18 @@ Example:
 packer build -var "cpus=2" -var "memory=4096" .
 ```
 
-## Credentials
-
-- Live ISO SSH: `root` / `packer`
-- Installed system:
-  - `root` / `root`
-  - `vagrant` / `vagrant`
-
-Change these after first boot if you plan to use the image beyond local testing.
-
 ## Notes
 
 - The installer wipes `/dev/sda`.
 - NAT port forwarding includes SSH on host port `2222` by default.
 - The build is headless; set `headless = false` in `arch.pkr.hcl` if you want to watch the VM boot.
+- Optional helpers are in `extra/` (`up.bat`, `halt.bat`). These assume a VM named `arch-linux` and use VBoxManage from the default install path; `up.bat` elevates to admin.
+
+## Releases
+
+Tags use CalVer. Example: `2026.01.28` (or `2026.01.28.1` for multiple releases in a day).
+When a tag is pushed, GitHub Actions builds the OVA and attaches it to the release.
+The workflow expects a self-hosted runner with VirtualBox installed.
 
 ## Files
 
