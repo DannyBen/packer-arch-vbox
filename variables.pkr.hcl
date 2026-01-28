@@ -1,9 +1,3 @@
-variable "vm_name" {
-  description = "The name of the VM in VirtualBox"
-  type        = string
-  default     = "arch-linux"
-}
-
 variable "shared_folder_hostpath" {
   description = "The path on your computer to share with the VM"
   type        = string

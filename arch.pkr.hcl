@@ -1,16 +1,15 @@
 source "virtualbox-iso" "arch" {
   # --- Resource Allocation ---
-  vm_name   = var.vm_name
   cpus      = var.cpus
   memory    = var.memory
   disk_size = var.disk_size
 
   # --- OS & Media ---
-  guest_os_type = "ArchLinux_64"
-  iso_url       = "https://mirrors.kernel.org/archlinux/iso/latest/archlinux-x86_64.iso"
-  iso_checksum  = "file:https://mirrors.kernel.org/archlinux/iso/latest/sha256sums.txt"
-  headless      = true
-  format        = "ova"
+  guest_os_type  = "ArchLinux_64"
+  iso_url        = "https://mirrors.kernel.org/archlinux/iso/latest/archlinux-x86_64.iso"
+  iso_checksum   = "file:https://mirrors.kernel.org/archlinux/iso/latest/sha256sums.txt"
+  headless       = true
+  format         = "ova"
 
   # --- Connectivity ---
   # Packer connects via SSH to the live ISO environment to run the installer.
@@ -22,6 +21,7 @@ source "virtualbox-iso" "arch" {
   ssh_host_port_max = 2222
 
   # --- VirtualBox Config ---
+  hard_drive_interface = "sata"
   vboxmanage = [
     # Performance & System Architecture
     # ---------------------------------
@@ -32,26 +32,35 @@ source "virtualbox-iso" "arch" {
     ["modifyvm", "{{.Name}}", "--paravirt-provider", "minimal"],
     ["modifyvm", "{{.Name}}", "--rtcuseutc", "on"],
 
+    # USB
+    # ------------------------
+    ["modifyvm", "{{.Name}}", "--usb", "on", "--usbehci", "on"],
+
     # Graphics & UI Experience
     # ------------------------
     # VMSVGA: The standard driver for Linux guests
     # vram: Better video performance
-    # bidirectional: Allows seamless copy-paste and drag-drop
+    # usbtablet: Better pointing device
     ["modifyvm", "{{.Name}}", "--graphicscontroller", "vmsvga"],
     ["modifyvm", "{{.Name}}", "--vram", "128"],
-    ["modifyvm", "{{.Name}}", "--clipboard-mode", "bidirectional"],
-    ["modifyvm", "{{.Name}}", "--draganddrop", "bidirectional"],
+    ["modifyvm", "{{.Name}}", "--mouse", "usbtablet"],
 
     # Networking & Filesystem
     # -----------------------
     # virtio: The "fast lane" for network traffic (virt-io driver)
-    # setextradata: The critical fix allowing symlinks on Windows host shares
     ["modifyvm", "{{.Name}}", "--nictype1", "virtio"],
-    ["setextradata", "{{.Name}}", "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"],
 
     # Shared Folder
     # -----------------------
     ["sharedfolder", "add", "{{.Name}}", "--name", "vagrant", "--hostpath", "${abspath(var.shared_folder_hostpath)}"],
+
+    # Hard Disk
+    # setextradata: The critical fix allowing symlinks on Windows host shares
+    # Note that VirtualBox needs to start as admin for this to work              
+    # ------------------------
+    ["storagectl", "{{.Name}}", "--name", "SATA Controller", "--hostiocache", "on"],
+    ["storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "0", "--device", "0", "--nonrotational", "on"],
+    ["setextradata", "{{.Name}}", "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"],
 
     # Port Forwarding
     # Format: name, protocol, hostip, hostport, guestip, guestport
@@ -63,7 +72,6 @@ source "virtualbox-iso" "arch" {
     ["modifyvm", "{{.Name}}", "--natpf1", "Web5000,tcp,,5000,,5000"],
     ["modifyvm", "{{.Name}}", "--natpf1", "Web8080,tcp,,8080,,8080"]
   ]
-
 
   # --- Boot Sequencing ---
   # This waits for the Arch ISO prompt, sets a temporary root password,
