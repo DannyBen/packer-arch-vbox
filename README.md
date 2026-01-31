@@ -41,6 +41,11 @@ packer build -force .
 build
 ```
 
+### Build notes
+
+- Do not run this in subst dirs, only native dirs.
+- Power off any other virtual machine when building.
+
 ## Installing the OVA
 
 1. Double click the OVA (or select File > Import Appliance from VirtualBox).
@@ -76,7 +81,6 @@ packer build -var "cpus=2" -var "memory=4096" .
 - The installer wipes `/dev/sda`.
 - NAT port forwarding includes SSH on host port `2222` by default.
 - The build is headless; set `headless = false` in `arch.pkr.hcl` if you want to watch the VM boot.
-- Optional helpers are in `extra/` (`up.bat`, `halt.bat`). These assume a VM named `arch-linux` and use VBoxManage from the default install path; `up.bat` elevates to admin.
 
 ## Releases
 
