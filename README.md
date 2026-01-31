@@ -58,7 +58,6 @@ build
 ## Outputs
 
 - OVA artifact in `output-arch/`
-- Build manifest in `packer-manifest.json`
 - Packer log in `packer.log` (when using `build.cmd`)
 
 ## Variables
