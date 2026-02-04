@@ -1,5 +1,7 @@
 # Arch Linux Packer Build (VirtualBox)
 
+![repocard](repocard.svg)
+
 This folder builds a minimal Arch Linux VirtualBox OVA using Packer.
 
 The build boots the official Arch ISO, installs a base system, and configures a
