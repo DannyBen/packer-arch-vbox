@@ -5,7 +5,7 @@
 This folder builds a minimal Arch Linux VirtualBox OVA using Packer.
 
 The build boots the official Arch ISO, installs a base system, and configures a
-virtual machine that aims to provide an experience similar to Vagrant.
+virtual machine that aims to provide a familiar experience to Vagrant users.
 
 This image is designed **FOR DEVELOPMENT ONLY**.
 
@@ -82,6 +82,29 @@ packer build -var "cpus=2" -var "memory=4096" .
 - The installer wipes `/dev/sda`.
 - NAT port forwarding includes SSH on host port `2222` by default.
 - The build is headless; set `headless = false` in `arch.pkr.hcl` if you want to watch the VM boot.
+
+## Optimization Notes
+
+### What You Need To Do
+
+- Disable Hyper-V (run in **Administrator CMD**, then do a full shutdown/start):
+  ```bat
+  bcdedit /set hypervisorlaunchtype off
+  dism /online /disable-feature /featurename:Microsoft-Hyper-V-All /NoRestart
+  ```
+- Start VirtualBox as Administrator (right-click shortcut -> **Run as administrator**).
+- If symlinks still fail, open `secpol.msc` -> Local Policies -> User Rights Assignment -> Create symbolic links, add your user, then sign out/sign in.
+
+### What Packer Already Does (And Why)
+
+- Enables `VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant=1` so symlink creation can work on Windows-hosted shared folders.
+- Sets `--paravirt-provider kvm`, `--x2apic on`, and `--nictype1 virtio` to improve Linux guest performance and interrupt/network behavior.
+
+### Verification Checklist
+
+- In VM status/details, execution engine should show `VT-x/AMD-V` (not `Native API`).
+- VM window should show the blue `V` icon (not the green turtle icon).
+- Inside the guest, creating a symlink under `/vagrant` should succeed.
 
 ## Releases
 
