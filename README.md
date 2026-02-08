@@ -1,6 +1,6 @@
 # Arch Linux Packer Build (VirtualBox)
 
-![repocard](repocard.svg)
+![repocard](https://repocard.dannyben.com/svg/arch-build.svg)
 
 This folder builds a minimal Arch Linux VirtualBox OVA using Packer.
 
