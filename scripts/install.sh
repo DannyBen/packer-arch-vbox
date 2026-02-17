@@ -27,14 +27,25 @@ echo "vagrant /vagrant vboxsf defaults,uid=1000,gid=1000,dmode=775,fmode=775,nof
 
 # --- 3. System Configuration ---
 echo "==> Configuring system settings and bootloader..."
-arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="module_blacklist=vmwgfx /' /etc/default/grub
-arch-chroot /mnt bash -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
+arch-chroot /mnt bash <<'SCRIPT'
+set -e
+
+if ! grep -q "module_blacklist=vmwgfx" /etc/default/grub; then
+  sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="module_blacklist=vmwgfx /' /etc/default/grub
+fi
+
+if ! grep -q "^GRUB_DISABLE_OS_PROBER=" /etc/default/grub; then
+  echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
+else
+  sed -i 's/^GRUB_DISABLE_OS_PROBER=.*/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+fi
+SCRIPT
 
 arch-chroot /mnt bash -c "grub-install --target=i386-pc /dev/sda"
 arch-chroot /mnt bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 
 echo "==> Ensuring VirtualBox shared folder modules load at boot..."
-arch-chroot /mnt bash -c "echo 'vboxsf' > /etc/modules-load.d/vboxsf.conf"
+arch-chroot /mnt bash -c "grep -qx 'vboxsf' /etc/modules-load.d/vboxsf.conf 2>/dev/null || echo 'vboxsf' > /etc/modules-load.d/vboxsf.conf"
 
 echo "==> Blacklisting vmwgfx (disable VMware graphics)..."
 arch-chroot /mnt bash -c "echo 'blacklist vmwgfx' > /etc/modprobe.d/blacklist-vmwgfx.conf"
@@ -60,7 +71,6 @@ arch-chroot /mnt chown vagrant:vagrant /vagrant
 # --- 5. Cleanup & Optimization ---
 echo "==> Purging pacman cache..."
 arch-chroot /mnt bash -c "yes | pacman -Scc"
-
 
 echo "==> Unmounting and finalizing..."
 sync
