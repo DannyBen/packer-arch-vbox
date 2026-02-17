@@ -27,6 +27,7 @@ echo "vagrant /vagrant vboxsf defaults,uid=1000,gid=1000,dmode=775,fmode=775,nof
 
 # --- 3. System Configuration ---
 echo "==> Configuring system settings and bootloader..."
+arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="module_blacklist=vmwgfx /' /etc/default/grub
 arch-chroot /mnt bash -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
 
 arch-chroot /mnt bash -c "grub-install --target=i386-pc /dev/sda"
@@ -34,6 +35,10 @@ arch-chroot /mnt bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 
 echo "==> Ensuring VirtualBox shared folder modules load at boot..."
 arch-chroot /mnt bash -c "echo 'vboxsf' > /etc/modules-load.d/vboxsf.conf"
+
+echo "==> Blacklisting vmwgfx (disable VMware graphics)..."
+arch-chroot /mnt bash -c "echo 'blacklist vmwgfx' > /etc/modprobe.d/blacklist-vmwgfx.conf"
+arch-chroot /mnt mkinitcpio -P
 
 echo "==> Enabling system services..."
 arch-chroot /mnt systemctl enable NetworkManager sshd vboxservice
