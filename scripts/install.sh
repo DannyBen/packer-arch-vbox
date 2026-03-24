@@ -18,7 +18,7 @@ mount /dev/sda1 /mnt
 echo "==> Installing base system and essential packages..."
 mkdir -p /mnt/etc
 echo "KEYMAP=us" > /mnt/etc/vconsole.conf
-pacstrap /mnt base linux grub networkmanager openssh virtualbox-guest-utils sudo
+pacstrap /mnt base linux grub networkmanager openssh virtualbox-guest-utils sudo alsa-utils
 
 echo "==> Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -59,8 +59,8 @@ echo "==> Creating users and configuring permissions..."
 # Set root password
 arch-chroot /mnt bash -c "echo 'root:root' | chpasswd"
 
-# Create vagrant user with sudo access
-arch-chroot /mnt bash -c "useradd -m -G wheel -s /bin/bash vagrant"
+# Create vagrant user with sudo and direct audio device access
+arch-chroot /mnt bash -c "useradd -m -G wheel,audio -s /bin/bash vagrant"
 arch-chroot /mnt bash -c "echo 'vagrant:vagrant' | chpasswd"
 arch-chroot /mnt bash -c "echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/wheel"
 

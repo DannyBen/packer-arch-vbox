@@ -41,9 +41,15 @@ source "virtualbox-iso" "arch" {
     # VMSVGA: The standard driver for Linux guests
     # vram: Better video performance
     # usbtablet: Better pointing device
+    # audio-*: Enable audio in and out
     ["modifyvm", "{{.Name}}", "--graphicscontroller", "vmsvga"],
     ["modifyvm", "{{.Name}}", "--vram", "128"],
     ["modifyvm", "{{.Name}}", "--mouse", "usbtablet"],
+    ["modifyvm", "{{.Name}}", "--audio-enabled", "on"],
+    ["modifyvm", "{{.Name}}", "--audio-driver", "default"],
+    ["modifyvm", "{{.Name}}", "--audio-controller", "hda"],
+    ["modifyvm", "{{.Name}}", "--audio-out", "on"],
+    ["modifyvm", "{{.Name}}", "--audio-in", "on"],
 
     # Networking & Filesystem
     # -----------------------

@@ -15,6 +15,7 @@ This image is designed **FOR DEVELOPMENT ONLY**.
 - Root user (`root:root`)
 - Vagrant user (`vagrant:vagrant`)
 - VirtualBox Guest Utils
+- ALSA audio tools (`alsa-utils`)
 - Shared folder (guest: /vagrant)
 - Forwarded development ports
 - Optimizations for Linux guests on VirtualBox Windows hosts
@@ -51,8 +52,8 @@ build
 ## Installing the OVA
 
 1. Double click the OVA (or select File > Import Appliance from VirtualBox).
-2. Change the machine name.
-3. Change the shared folder host directory (keep the name `vagrant`).
+2. In the Import dialog: Change the machine name.
+3. In the Settings dialog: Change the shared folder host directory.
 4. Boot the VM.
 5. Log in with `ssh vagrant@localhost -p 2222` or use the VM console with
    `root:root` or `vagrant:vagrant`.
@@ -99,6 +100,7 @@ packer build -var "cpus=2" -var "memory=4096" .
 
 - Enables `VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant=1` so symlink creation can work on Windows-hosted shared folders.
 - Sets `--paravirt-provider kvm`, `--x2apic on`, and `--nictype1 virtio` to improve Linux guest performance and interrupt/network behavior.
+- Enables VirtualBox audio with `Intel HD Audio`, installs `alsa-utils`, and adds `vagrant` to the `audio` group so sound can be tested immediately after import.
 
 ### Verification Checklist
 
