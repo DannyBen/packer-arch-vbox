@@ -1,6 +1,13 @@
 Changelog
 ========================================
 
+v26.03.24 - 2026-03-24
+----------------------------------------
+
+- Add audio support [`697c5da`](https://github.com/dannyben/packer-arch-vbox/commit/697c5da)
+- Compare [`v26.02.17..v26.03.24`](https://github.com/dannyben/packer-arch-vbox/compare/v26.02.17..v26.03.24)
+
+
 v26.02.17 - 2026-02-17
 ----------------------------------------
 
