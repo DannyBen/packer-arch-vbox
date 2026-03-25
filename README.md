@@ -15,7 +15,6 @@ This image is designed **FOR DEVELOPMENT ONLY**.
 - Root user (`root:root`)
 - Vagrant user (`vagrant:vagrant`)
 - VirtualBox Guest Utils
-- ALSA audio tools (`alsa-utils`)
 - Shared folder (guest: /vagrant)
 - Forwarded development ports
 - Optimizations for Linux guests on VirtualBox Windows hosts
@@ -100,7 +99,7 @@ packer build -var "cpus=2" -var "memory=4096" .
 
 - Enables `VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant=1` so symlink creation can work on Windows-hosted shared folders.
 - Sets `--paravirt-provider kvm`, `--x2apic on`, and `--nictype1 virtio` to improve Linux guest performance and interrupt/network behavior.
-- Enables VirtualBox audio with `Intel HD Audio`, installs `alsa-utils`, and adds `vagrant` to the `audio` group so sound can be tested immediately after import.
+- Enables VirtualBox audio with `Intel HD Audio` and adds `vagrant` to the `audio` group.
 
 ### Verification Checklist
 

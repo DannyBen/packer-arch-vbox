@@ -18,7 +18,7 @@ mount /dev/sda1 /mnt
 echo "==> Installing base system and essential packages..."
 mkdir -p /mnt/etc
 echo "KEYMAP=us" > /mnt/etc/vconsole.conf
-pacstrap /mnt base linux grub networkmanager openssh virtualbox-guest-utils sudo alsa-utils
+pacstrap /mnt base linux grub networkmanager openssh virtualbox-guest-utils sudo
 
 echo "==> Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
