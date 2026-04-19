@@ -89,6 +89,7 @@ packer build -var "cpus=2" -var "memory=4096" .
 
 - Disable Windows Hypervisor for VirtualBox Performance ([instructions](#how-to-disable-windows-hypervisor))
 - Always run the virtual machine as admin. You can use the [up.bat](up.bat) file, and create a shortcut for it with "Run As Administrator" enabled.
+- Ensure you can create symlinks in the shared folder, if not see [possible fixes](#hot-to-fix-symlinks)
 
 ### What Packer Already Does (And Why)
 
@@ -184,15 +185,24 @@ Turn **Memory Integrity OFF**, then reboot again.
 
 Start VirtualBox as Administrator.
 
-### 8) Fix symlink issues (if needed)
+## How to fix symlinks
 
-If symlinks fail:
+Try creating a symlink in the shared folder:
 
-- Run `secpol.msc` (on the host)
-- Go to:
-  Local Policies → User Rights Assignment → Create symbolic links
-- Add your user
-- Sign out and sign back in
+```bash
+cd /vagrant
+ln -s ~ testlink
+```
+
+If it fails, follow these steps:
+
+1. Terminate the machine and shut down VirtualBox
+2. Open terminal as administrator
+3. Run
+   ```
+   "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" setextradata "arch-linux" VBoxInternal2/SharedFoldersEnableSymlinksCreate/SHARE_NAME 1
+   ```
+4. Start the machine **as administrator**.
 
 
 [releases]: https://github.com/DannyBen/packer-arch-vbox/releases
