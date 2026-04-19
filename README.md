@@ -200,7 +200,7 @@ If it fails, follow these steps:
 2. Open terminal as administrator
 3. Run
    ```
-   "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" setextradata "arch-linux" VBoxInternal2/SharedFoldersEnableSymlinksCreate/SHARE_NAME 1
+   "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" setextradata "arch-linux" VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant 1
    ```
 4. Start the machine **as administrator**.
 
