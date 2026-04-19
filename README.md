@@ -57,6 +57,9 @@ build
 5. Log in with `ssh vagrant@localhost -p 2222` or use the VM console with
    `root:root` or `vagrant:vagrant`.
 
+If you use [up.bat](up.bat), set `VM_NAME` in that file to the same machine
+name you chose during import.
+
 ## Outputs
 
 - OVA artifact in `output-arch/`
@@ -128,6 +131,9 @@ Run in **Administrator Command Prompt**:
 bcdedit /set hypervisorlaunchtype off
 ```
 
+Note: These steps can affect WSL2, Docker Desktop, Windows Sandbox, and other
+tools that rely on the Windows hypervisor.
+
 ### 2) Disable Hyper-V (if present)
 
 ```bat
@@ -164,7 +170,7 @@ A full reboot is required for changes to take effect.
 After reboot:
 
 ```bat
-systeminfo | find "Hypervisor"
+systeminfo | findstr /i "hypervisor"
 ```
 
 Expected result: No output
@@ -200,10 +206,10 @@ If it fails, follow these steps:
 2. Open terminal as administrator
 3. Run
    ```
-   "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" setextradata "arch-linux" VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant 1
+   "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" setextradata "<VM name>" VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant 1
    ```
+   Replace `<VM name>` with the name shown in VirtualBox.
 4. Start the machine **as administrator**.
 
 
 [releases]: https://github.com/DannyBen/packer-arch-vbox/releases
-
