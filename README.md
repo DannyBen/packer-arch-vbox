@@ -87,13 +87,85 @@ packer build -var "cpus=2" -var "memory=4096" .
 
 ### What You Need To Do
 
-- Disable Hyper-V (run in **Administrator CMD**, then do a full shutdown/start):
-  ```bat
-  bcdedit /set hypervisorlaunchtype off
-  dism /online /disable-feature /featurename:Microsoft-Hyper-V-All /NoRestart
-  ```
-- Start VirtualBox as Administrator (right-click shortcut -> **Run as administrator**).
-- If symlinks still fail, open `secpol.msc` -> Local Policies -> User Rights Assignment -> Create symbolic links, add your user, then sign out/sign in.
+
+<details>
+<summary>[Show] Disable Windows Hypervisor for VirtualBox Performance</summary>
+
+#### 1) Disable hypervisor at boot (required)
+
+Run in **Administrator Command Prompt**:
+
+```bat
+bcdedit /set hypervisorlaunchtype off
+```
+
+#### 2) Disable Hyper-V (if present)
+
+```bat
+dism /online /disable-feature /featurename:Microsoft-Hyper-V-All /NoRestart
+```
+
+If you get:
+```
+Feature name ... is unknown
+```
+this is safe to ignore (your Windows edition does not include Hyper-V).
+
+#### 3) Disable other hypervisor-triggering features (critical)
+
+Check current state:
+
+```bat
+dism /online /get-features /format:table | findstr /i "VirtualMachinePlatform HypervisorPlatform"
+```
+
+If any of these are **Enabled**, disable them:
+
+```bat
+dism /online /disable-feature /featurename:VirtualMachinePlatform /NoRestart
+dism /online /disable-feature /featurename:HypervisorPlatform /NoRestart
+```
+
+#### 4) Reboot
+
+A full reboot is required for changes to take effect.
+
+#### 5) Verify hypervisor is disabled
+
+After reboot:
+
+```bat
+systeminfo | find "Hypervisor"
+```
+
+Expected result: No output
+
+If you still see:
+```
+A hypervisor has been detected...
+```
+then a Windows security feature is still enabling it.
+
+#### 6) If still enabled (only if needed)
+
+Open: **Windows Security** → **Device Security** → **Core Isolation**
+
+Turn **Memory Integrity OFF**, then reboot again.
+
+#### 7) Run VirtualBox
+
+Start VirtualBox as Administrator.
+
+#### 8) Fix symlink issues (if needed)
+
+If symlinks fail:
+
+- Run `secpol.msc` (on the host)
+- Go to:
+  Local Policies → User Rights Assignment → Create symbolic links
+- Add your user
+- Sign out and sign back in
+</details>
 
 ### What Packer Already Does (And Why)
 
