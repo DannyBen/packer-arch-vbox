@@ -90,7 +90,7 @@ packer build -var "cpus=2" -var "memory=4096" .
 
 ### What You Need To Do
 
-- Disable Windows Hypervisor for VirtualBox Performance ([instructions](#how-to-disable-windows-hypervisor))
+- Disable Windows Hypervisor for VirtualBox Performance ([instructions](#how-to-disable-windows-hypervisor)).
 - Always run the virtual machine as admin. You can use the [up.bat](up.bat) file, and create a shortcut for it with "Run As Administrator" enabled.
 - Ensure you can create symlinks in the shared folder, if not see [possible fixes](#how-to-fix-symlinks).
 
