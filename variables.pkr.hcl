@@ -7,7 +7,7 @@ variable "shared_folder_hostpath" {
 variable "cpus" {
   description = "Number of virtual CPUs allocated to the guest."
   type        = number
-  default     = 4
+  default     = 2
 }
 
 variable "memory" {

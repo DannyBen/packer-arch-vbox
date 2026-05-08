@@ -77,7 +77,7 @@ Defaults are in `variables.pkr.hcl`. Override with `-var` or a `.pkrvars.hcl` fi
 Example:
 
 ```bash
-packer build -var "cpus=2" -var "memory=4096" .
+packer build -var "cpus=4" -var "memory=4096" .
 ```
 
 ## Notes
