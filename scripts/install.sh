@@ -23,7 +23,7 @@ pacstrap /mnt base linux grub networkmanager openssh virtualbox-guest-utils-nox 
 echo "==> Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
 # Configure shared folder mount point for VirtualBox
-echo "vagrant /vagrant vboxsf defaults,uid=1000,gid=1000,dmode=775,fmode=775,nofail,_netdev 0 0" >> /mnt/etc/fstab
+echo "vagrant /vagrant vboxsf defaults,noatime,uid=1000,gid=1000,dmode=775,fmode=775,nofail,_netdev 0 0" >> /mnt/etc/fstab
 
 # --- 3. System Configuration ---
 echo "==> Configuring system settings and bootloader..."
